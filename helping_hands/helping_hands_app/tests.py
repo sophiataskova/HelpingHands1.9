@@ -26,9 +26,9 @@ class RegistrationTest(TestCase):
                                          'gender':'male',
                                          'phone_number':'1231231233'
                                           })
+
         self.assertEqual(response.status_code, 302)
-        import pdb; pdb.set_trace()
-        saved_user = ITUUser.objects.filter(username='john123')
+        saved_user = ITUUser.objects.filter(username='smith@asdf.com')
 
         self.assertEqual(len(saved_user), 1)
 
@@ -55,7 +55,7 @@ class RegistrationTest(TestCase):
 
         
         self.assertEqual(second_response.status_code, 400)
-        saved_user = ITUUser.objects.filter(username='john123')
+        saved_user = ITUUser.objects.filter(username='smith@asdf.com')
         # still should only have one
         self.assertEqual(len(saved_user), 1)
 
@@ -70,10 +70,11 @@ class RegistrationTest(TestCase):
                                             'security_question',
                                             'security_answer',
                                             'gender',
-                                            'phone_number',
+                                            '1234564566',
                                              password='pass')
+        ituUser.save()
 
-
+        import pdb; pdb.set_trace()
         response = c.post('/login/', {'username': 'testusername',
                                         'email': 'email',
                                         'password': 'pass'})
@@ -83,28 +84,28 @@ class RegistrationTest(TestCase):
     def test_login_api_bad(self):
         c = Client()
 
-        response = c.post('/login/', {'username': 'test3username',
+        response = c.post('/login/', {'username': 'testusername',
                                         'email': 'email',
-                                        'password': 'password'})
+                                        'password': 'badpassword'})
         self.assertEqual(response.status_code, 400)
 
 
     def test_logout_api_good(self):
         c = Client()        
 
-        ituUser = ITUUser.objects.create_user('email',
-                                             'username',
+        ituUser = ITUUser.objects.create_user('email1',
+                                             'username1',
                                              'first_name',
                                              'last_name',
                                              'security_question',
                                              'security_answer',
                                              'gender',
-                                             'phone_number',
+                                             '4564567899',
                                              password='password')
 
-        response = c.post('/login/', {'username': 'testusername',
-                                        'email': 'email',
-                                        'password': 'pass'})
-        logout_response = c.post('/logout/', {'username': 'testusername'})
+        response = c.post('/login/', {'username': 'username1',
+                                        'email': 'email1',
+                                        'password': 'password'})
+        logout_response = c.post('/logout/', {'username': 'username1'})
         self.assertEqual(logout_response.status_code, 200)
 

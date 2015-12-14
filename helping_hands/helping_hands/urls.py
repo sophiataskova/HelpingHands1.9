@@ -23,6 +23,9 @@ urlpatterns = [
     url(r'^helping_hands_app/', admin.site.urls),
     url(r'^$', views.index, name='index'),
 
+    url(r'^register/', views.helping_hands_register),
+    url(r'^login/', views.helping_hands_login),
+    url(r'^logout/', views.helping_hands_logout),
     # url(r'^register/', views.helping_hands_register),
     # url(r'^login/', views.helping_hands_login),
     # url(r'^logout/', views.helping_hands_logout),

@@ -19,15 +19,17 @@ from django.db.utils import IntegrityError
 
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
+from helping_hands_app.models import ITUUser, ITUUserManager, NGOUser
+
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're at the events index.")
 
 
 def helping_hands_register(request):
     if request.method == 'POST':
         
-
+    	# import pdb; pdb.set_trace()
         try:
             itu_user = ITUUser.objects.create_user(
                 request.POST['username'],                
@@ -40,7 +42,8 @@ def helping_hands_register(request):
                 request.POST['phone_number'],
                 request.POST['password'],
                 )            
-
+            itu_user.save()
+            
             return HttpResponseRedirect('/admin/')
 
         except IntegrityError:
@@ -56,7 +59,15 @@ def helping_hands_login(request):
     username = request.POST['username']
     password = request.POST['password']
     email = request.POST['email']
-    user = authenticate(username=username, password=password, email=email)   
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
+    security_question = request.POST['security_question']
+    security_answer = request.POST['security_answer']
+    gender = request.POST['gender']
+    phone_number = request.POST['phone_number']
+                
+    user = authenticate(email=email, password=password)   
+    import pdb; pdb.set_trace()
     if user is not None:
         login(request, user)
         return HttpResponse(status=200)

@@ -44,7 +44,7 @@ class ITUUserManager(BaseUserManager):
                             security_answer=security_answer,
                             gender=gender,
                             phone_number=phone_number,
-                            password=password)    
+                            password=password)
         return user
 
     def create_superuser(self, email, first_name,
